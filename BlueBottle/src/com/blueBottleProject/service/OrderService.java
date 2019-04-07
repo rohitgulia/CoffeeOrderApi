@@ -2,6 +2,8 @@ package com.blueBottleProject.service;
 
 import java.util.ArrayList;
 import org.json.JSONObject;
+import org.junit.platform.commons.util.StringUtils;
+
 import com.blueBottleProject.misc.OrderIdNotValidException;
 import com.blueBottleProject.obj.OrderDetailsObj;
 import com.blueBottleProject.redis.RedisConnectionSetup;
@@ -10,19 +12,23 @@ import com.blueBottleProject.repo.OrderRepo;
 
 public class OrderService implements Order {
 	OrderProcessor orderDtlsRepo;
+
 	public OrderService(RedisConnectionSetup redisConn) {
 		orderDtlsRepo = new OrderRepo(redisConn);
 	}
-	
-	public OrderService() {}
+
+	public OrderService() {
+	}
 
 	@Override
-	public ArrayList<OrderDetailsObj> getOrderList() throws Exception{
+	public ArrayList<OrderDetailsObj> getOrderList() throws Exception {
 		return orderDtlsRepo.getOrderListRepo();
 	}
 
 	@Override
 	public JSONObject updateOrder(OrderDetailsObj orderDtlsObj) throws OrderIdNotValidException, Exception {
+		if (orderDtlsObj.getOrderId() == null || orderDtlsObj.getOrderId() < 0)
+			throw new OrderIdNotValidException("Sorry. Order id not valid");
 		return orderDtlsRepo.updateOrderRepo(orderDtlsObj);
 	}
 
@@ -30,5 +36,5 @@ public class OrderService implements Order {
 	public JSONObject addNewOrder(OrderDetailsObj orderDtlsObj) throws Exception {
 		return orderDtlsRepo.addNewOrderRepo(orderDtlsObj);
 	}
-	
+
 }

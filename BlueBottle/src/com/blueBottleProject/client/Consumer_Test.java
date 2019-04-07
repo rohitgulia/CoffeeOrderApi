@@ -13,44 +13,44 @@ import com.blueBottleProject.obj.OrderDetailsObj;
 
 public class Consumer_Test {
 
-	private static final String URL = "http://localhost:8080/CaseStudy/api/products";
+	private static final String URL = "http://localhost:8080/BlueBottle/api/orders";
 
 	private Client client = ClientBuilder.newClient();
 
-	public void createNewData_invalidProductId_throwException() throws OrderIdNotValidException, Exception {
-		ProductPriceObj productPriceObj = new ProductPriceObj(22.33, "USD");
-		OrderDetailsObj productDtlsObj = new OrderDetailsObj(-13860428, "Movie", productPriceObj);
-		client.target(URL).path(String.valueOf("addProduct")).request(MediaType.APPLICATION_JSON)
-				.post(Entity.entity(productDtlsObj, MediaType.APPLICATION_JSON));
+	public void updateOrder_invalidOrderId_throwException() throws OrderIdNotValidException, Exception {
+		OrderDetailsObj orderDtlsObj = new OrderDetailsObj(1, "Bella Donovan", "Cold Brew", "2019-12-10", 2,
+				50, "test note", false);
+		client.target(URL).path(String.valueOf("updateOrder")).request(MediaType.APPLICATION_JSON)
+				.post(Entity.entity(orderDtlsObj, MediaType.APPLICATION_JSON));
 	}
-
-	public void createNewData_invalidPriceValue_throwException() throws OrderIdNotValidException, Exception {
-		ProductPriceObj productPriceObj = new ProductPriceObj(-22.33, "USD");
-		OrderDetailsObj productDtlsObj = new OrderDetailsObj(13860428, "Movie", productPriceObj);
-		client.target(URL).path(String.valueOf("addProduct")).request(MediaType.APPLICATION_JSON)
-				.post(Entity.entity(productDtlsObj, MediaType.APPLICATION_JSON));
-	}
-
-	public void updateData_invalidProductId_throwException() throws OrderIdNotValidException, Exception {
-		ProductPriceObj productPriceObj = new ProductPriceObj(42.33, "CAD");
-		OrderDetailsObj productDtlsObj = new OrderDetailsObj(-13860428, "Movie2", productPriceObj);
-		client.target(URL).path("13860428").request(MediaType.APPLICATION_JSON)
-				.put(Entity.entity(productDtlsObj, MediaType.APPLICATION_JSON));
-	}
-
-	public void updateData_invalidPriceValue_throwException() throws OrderIdNotValidException, Exception {
-		ProductPriceObj productPriceObj = new ProductPriceObj(-42.33, "CAD");
-		OrderDetailsObj productDtlsObj = new OrderDetailsObj(13860428, "Movie2", productPriceObj);
-		client.target(URL).path("13860").request(MediaType.APPLICATION_JSON)
-				.put(Entity.entity(productDtlsObj, MediaType.APPLICATION_JSON));
-	}
-	
-	public void getData() {
-		Response response = client.target(URL).path("13860428").request(MediaType.APPLICATION_JSON).get();
-
-		OrderDetailsObj productDtlsObj = response.readEntity(OrderDetailsObj.class);
-		System.out.println("Status: " + response.getStatus());
-		System.out.println("Id: " + productDtlsObj.getId() + "\n" + "Name: " + productDtlsObj.getName() + "\n"
-				+ "Value: " + productDtlsObj.getCurrent_price().getValue());
-	}
+//	public void addNewOrder_emptyCoffeName_throwException() throws Exception {
+//		OrderDetailsObj orderDtlsObj = new OrderDetailsObj(0, "", "Cold Brew", "2019-12-10", 2,
+//				50, "test note", false);
+//		client.target(URL).path(String.valueOf("addOrder")).request(MediaType.APPLICATION_JSON)
+//				.post(Entity.entity(orderDtlsObj, MediaType.APPLICATION_JSON));
+//	}
+//	public void addNewOrder_emptyMethodName_throwException() throws Exception {
+//		OrderDetailsObj orderDtlsObj = new OrderDetailsObj(0, "Bella Donovan", "", "2019-12-10", 2,
+//				50, "test note", false);
+//		client.target(URL).path(String.valueOf("addOrder")).request(MediaType.APPLICATION_JSON)
+//				.post(Entity.entity(orderDtlsObj, MediaType.APPLICATION_JSON));
+//	}
+//	public void addNewOrder_emptyDate_throwException() throws Exception {
+//		OrderDetailsObj orderDtlsObj = new OrderDetailsObj(0, "Bella Donovan", "Cold Brew", "", 2,
+//				50, "test note", false);
+//		client.target(URL).path(String.valueOf("addOrder")).request(MediaType.APPLICATION_JSON)
+//				.post(Entity.entity(orderDtlsObj, MediaType.APPLICATION_JSON));
+//	}
+//	public void addNewOrder_invalidNumberOfCases_throwException() throws Exception {
+//		OrderDetailsObj orderDtlsObj = new OrderDetailsObj(0, "Bella Donovan", "Cold Brew", "2019-12-10", -2,
+//				50, "test note", false);
+//		client.target(URL).path(String.valueOf("addOrder")).request(MediaType.APPLICATION_JSON)
+//				.post(Entity.entity(orderDtlsObj, MediaType.APPLICATION_JSON));
+//	}
+//	public void addNewOrder_invalidPacketsPerCase_throwException() throws Exception {
+//		OrderDetailsObj orderDtlsObj = new OrderDetailsObj(0, "Bella Donovan", "Cold Brew", "2019-12-10", 2,
+//				-50, "test note", false);
+//		client.target(URL).path(String.valueOf("addOrder")).request(MediaType.APPLICATION_JSON)
+//				.post(Entity.entity(orderDtlsObj, MediaType.APPLICATION_JSON));
+//	}
 }

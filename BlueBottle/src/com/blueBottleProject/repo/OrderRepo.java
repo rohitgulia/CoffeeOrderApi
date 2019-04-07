@@ -46,49 +46,35 @@ public class OrderRepo implements OrderProcessor {
 
 	@Override
 	public JSONObject updateOrderRepo(OrderDetailsObj orderDtlsObj) throws OrderIdNotValidException, Exception {
-		if(orderDtlsObj.getOrderId() == null || orderDtlsObj.getOrderId() == 0)
-			throw new OrderIdNotValidException("Sorry. Order not found!!");
-		else if(StringUtils.isBlank(orderDtlsObj.getCoffeeName()) || StringUtils.isBlank(orderDtlsObj.getBrewMethod())
-				|| orderDtlsObj.getShipDate() == null ||  orderDtlsObj.getNumberOfCases() == null || orderDtlsObj.getPacketsPerCase() == null)
-			throw new Exception("Sorry. Order not valid!!");
-		
 		RedissonClient redisClient = checkDatabaseConnection();
 		RMap<Integer, OrderDetailsObj> orderListInRedis = redisClient.getMap("orderList");
-		
+
 		if (orderListInRedis.containsKey(orderDtlsObj.getOrderId())) {
 			JSONObject result = new JSONObject();
 			orderListInRedis.replace(orderDtlsObj.getOrderId(), orderDtlsObj);
 			result.put("result", "success");
 			return result;
-		}
-		else
+		} else
 			throw new OrderIdNotValidException("Sorry. Order not found!!");
 	}
 
 	@Override
 	public JSONObject addNewOrderRepo(OrderDetailsObj orderDtlsObj) throws Exception {
-		if(StringUtils.isBlank(orderDtlsObj.getCoffeeName()) || StringUtils.isBlank(orderDtlsObj.getBrewMethod())
-				|| orderDtlsObj.getShipDate() == null ||  orderDtlsObj.getNumberOfCases() == null || orderDtlsObj.getPacketsPerCase() == null)
-			throw new Exception("Sorry. Order not valid!!");
-		
-		if (orderDtlsObj.getOrderId() == null || orderDtlsObj.getOrderId() == 0) {
-			JSONObject result = new JSONObject();
-			RedissonClient redisClient = checkDatabaseConnection();
-			RMap<Integer, OrderDetailsObj> orderListInRedis = redisClient.getMap("orderList");
-			RAtomicLong orderCounter = redisClient.getAtomicLong("orderCounter");
-			
-			if (orderCounter.isExists())
-				orderCounter.set(orderCounter.incrementAndGet());
-			else
-				orderCounter.set(1);
-			
-			orderDtlsObj.setOrderId((int) orderCounter.get());
-			//Add to redis
-			orderListInRedis.put((int) orderCounter.get(), orderDtlsObj);
-			result.put("result", "success");
-			return result;
-		} else
-			throw new Exception("Order details not valid!!");
+		JSONObject result = new JSONObject();
+		RedissonClient redisClient = checkDatabaseConnection();
+		RMap<Integer, OrderDetailsObj> orderListInRedis = redisClient.getMap("orderList");
+		RAtomicLong orderCounter = redisClient.getAtomicLong("orderCounter");
+
+		if (orderCounter.isExists())
+			orderCounter.set(orderCounter.incrementAndGet());
+		else
+			orderCounter.set(1);
+
+		orderDtlsObj.setOrderId((int) orderCounter.get());
+		// Add to redis
+		orderListInRedis.put((int) orderCounter.get(), orderDtlsObj);
+		result.put("result", "success");
+		return result;
 	}
 
 	private RedissonClient checkDatabaseConnection() throws Exception {

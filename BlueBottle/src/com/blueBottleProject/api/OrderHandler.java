@@ -55,8 +55,9 @@ public class OrderHandler {
 	public Response updateOrder(OrderDetailsObj orderDtlsObj) {
 		JSONObject result = new JSONObject();
 		try {
+			OrderDetailsObj orderDtlsOb = new OrderDetailsObj(orderDtlsObj);
 			order = new OrderService(redisConn);
-			result = order.updateOrder(orderDtlsObj);
+			result = order.updateOrder(orderDtlsOb);
 			return Response.status(200).entity(result.toString()).build();
 		} catch (OrderIdNotValidException e) {
 			result.put("error", e.getMessage());
@@ -73,11 +74,12 @@ public class OrderHandler {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/addOrder")
-	public Response addNewProductToRedis(OrderDetailsObj orderDtlsObj) {
+	public Response addNewOrder(OrderDetailsObj orderDtlsObj) {
 		JSONObject result = new JSONObject();
 		try {
+			OrderDetailsObj orderDtlsOb = new OrderDetailsObj(orderDtlsObj);
 			order = new OrderService(redisConn);
-			result = order.addNewOrder(orderDtlsObj);
+			result = order.addNewOrder(orderDtlsOb);
 			return Response.status(201).entity(result.toString()).build(); // 201: Http created status
 		} catch (OrderIdNotValidException e) {
 			result.put("error", e.getMessage());
