@@ -73,7 +73,7 @@ public class OrderRepo implements OrderProcessor {
 		orderDtlsObj.setOrderId((int) orderCounter.get());
 		// Add to redis
 		orderListInRedis.put((int) orderCounter.get(), orderDtlsObj);
-		result.put("result", "success");
+		result.put("result", new JSONObject(orderDtlsObj));
 		return result;
 	}
 
