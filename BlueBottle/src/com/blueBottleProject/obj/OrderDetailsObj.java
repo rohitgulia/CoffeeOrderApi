@@ -2,7 +2,7 @@ package com.blueBottleProject.obj;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.junit.platform.commons.util.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.blueBottleProject.misc.OrderIdNotValidException;
 

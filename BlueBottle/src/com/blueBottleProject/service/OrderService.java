@@ -2,8 +2,6 @@ package com.blueBottleProject.service;
 
 import java.util.ArrayList;
 import org.json.JSONObject;
-import org.junit.platform.commons.util.StringUtils;
-
 import com.blueBottleProject.misc.OrderIdNotValidException;
 import com.blueBottleProject.obj.OrderDetailsObj;
 import com.blueBottleProject.redis.RedisConnectionSetup;
