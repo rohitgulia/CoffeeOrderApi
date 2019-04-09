@@ -44,6 +44,12 @@
   
   Project can be exported as .war file and deployed on server.
   
+## Future Enhancements
+  
+  Adding more test cases.
+  
+  Sending coffee name, brew method options from api.
+  
 ## Api endpoints
       
 #GET request:
