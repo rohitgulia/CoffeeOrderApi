@@ -4,7 +4,8 @@
 
   ### Project Setup:
 
-      Project uses Redis as No-SQL database to store data. Please install Redis on your workstation before running anything.
+      Project uses Redis as No-SQL database to store data. Please install Redis on your workstation
+      before running anything.
 
       For Redis on windows below link will be helpful:
 
